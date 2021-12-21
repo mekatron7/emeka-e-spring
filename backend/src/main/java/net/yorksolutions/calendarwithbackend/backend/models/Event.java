@@ -15,6 +15,9 @@ public class Event {
     Long id;
 
     @JsonProperty
+    Long userId;
+
+    @JsonProperty
     String eventName;
 
     @JsonProperty
@@ -32,7 +35,8 @@ public class Event {
     @JsonProperty
     String lastUpdated;
 
-    public Event(String eventName, String eventDescription, String eventDate, String eventTime, String eventLocation, String lastUpdated) {
+    public Event(Long userId, String eventName, String eventDescription, String eventDate, String eventTime, String eventLocation, String lastUpdated) {
+        this.userId = userId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.eventDate = eventDate;
@@ -43,5 +47,9 @@ public class Event {
 
     public Event() {
 
+    }
+
+    public Long getId() {
+        return id;
     }
 }
