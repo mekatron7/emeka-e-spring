@@ -13,7 +13,7 @@ function Invites({invites, filteredInvites, invitesFilterMode, currentUser, filt
     const [startDate, setStartDate] = useState('')
     const [endDate, setEndDate] = useState('')
     function filterByDateRange() {
-        if(startDate !== '' && endDate !== ''){
+        if (startDate !== '' && endDate !== '') {
             filterInvites(startDate, endDate)
         }
     }
@@ -58,8 +58,8 @@ function mapStateToProps(state) {
     console.log(state.invites)
     console.log(state.events)
     return {
-        invites: state.events.filter(e => state.invites.includes(e.id)),
-        filteredInvites: state.filteredInvites.filter(e => state.invites.includes(i => i.eventId === e.id && i.inviteeId === state.currentUser.id)),
+        invites: state.events,
+        filteredInvites: state.filteredInvites.filter(e => state.invites.some(i => i.eventId === e.id && i.inviteeId === state.currentUser.id)),
         invitesFilterMode: state.invitesFilterMode
     }
 }

@@ -34,6 +34,7 @@ const GOT_USERNAME_STATUS = 'react-redux-calendar/event/GOT_USERNAME_STATUS'
 const SET_EVENTS = 'react-redux-calendar/event/SET_EVENTS'
 const START_DELETE_EVENT = 'react-redux-calendar/event/START_DELETE_EVENT'
 const HIDE_DELETE_EVENT_MODAL = 'react-redux-calendar/event/HIDE_DELETE_EVENT_MODAL'
+const SET_INVITES = 'react-redux-calendar/event/SET_INVITES'
 
 //Reducer
 const initialState = {
@@ -283,6 +284,11 @@ export default function reducer (state = initialState, action) {
                 eventToDelete: null
             }
 
+        case SET_INVITES:
+            return {
+                ...state
+            }
+
         default:
             return state
     }
@@ -412,6 +418,10 @@ export function startDeleteEvent(event) {
 
 export function hideDeleteEventModal() {
     return {type: HIDE_DELETE_EVENT_MODAL}
+}
+
+export function setInvites(invites) {
+    return {type: SET_INVITES, invites}
 }
 
 export function initiateLoginBackend(credentials) {
@@ -560,6 +570,32 @@ export function deleteEventBackend(id) {
                     dispatch(getEvents())
                     dispatch(hideDeleteEventModal())
                 }
+            })
+        }).catch(error => alert(error))
+    }
+}
+
+export function showInviteModalBackend(event) {
+    return function sideEffect(dispatch) {
+        dispatch(getAllUsers())
+        dispatch(showInviteModal(event))
+    }
+}
+
+export function sendInviteBackend(invite) {
+    return function sideEffect(dispatch) {
+        fetch("http://localhost:8080/invite/invite", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(invite)
+        }).then(response => {
+            if (!response.ok)
+                alert("Failed to send invite.")
+            response.text().then(text => {
+                if (text === 'success')
+                    alert('Invites still need to be set here.')
             })
         }).catch(error => alert(error))
     }

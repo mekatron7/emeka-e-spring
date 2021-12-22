@@ -1,5 +1,5 @@
 import {Button, Form, Modal} from "react-bootstrap";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {checkUsername, hideSignUpModal, register} from "../modules/user";
 
 function NewUser({dispatch, userReducer}){
@@ -10,25 +10,26 @@ function NewUser({dispatch, userReducer}){
     const[fName, setFName] = useState('')
     const[lName, setLName] = useState('')
     const[email, setEmail] = useState('')
+    const[availability, setAvailability] = useState('Username must be at least 3 characters.')
 
-    function validateUsername(event){
-        const input = event.target.value
+    useEffect(() => {
+        validateUsername()
+    }, [username]);
 
-        if(input.length < 3) {
-            document.getElementById('availability').innerText = 'Username must be at least 3 characters.'
+    function validateUsername(){
+        if(username.length < 3) {
+            setAvailability('Username must be at least 3 characters.')
             setValidUser(false)
         }
         else {
             //Display spinner by the availability element
-            console.log(userReducer.foundUsername)
-            dispatch(checkUsername(input))
-            console.log(userReducer.foundUsername)
+            dispatch(checkUsername(username))
             if (userReducer.foundUsername === 'true') {
-                document.getElementById('availability').innerText = 'Sorry this username is already taken.'
+                setAvailability('Sorry this username is already taken.')
                 setValidUser(false)
             }
             else {
-                document.getElementById('availability').innerText = 'This username is available!'
+                setAvailability('This username is available!')
                 setValidUser(true)
             }
         }
@@ -92,10 +93,9 @@ function NewUser({dispatch, userReducer}){
                     <Form.Group className="mb-3" controlId="formUsername">
                         <Form.Label>Username</Form.Label>
                         <Form.Control id="username" type="text" placeholder="Enter username" onChange={e => {
-                            validateUsername(e)
                             setUsername(e.target.value)
                         }}/>
-                        <Form.Text id="availability" className="text-muted"/>
+                        <Form.Text className="text-muted">{availability}</Form.Text>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formPassword">
                         <Form.Label>Password</Form.Label>

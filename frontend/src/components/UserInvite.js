@@ -1,12 +1,12 @@
 import {Button, Col, Row} from "react-bootstrap";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {cancelInvite, sendInvite} from "../modules/user";
+import {cancelInvite, sendInviteBackend} from "../modules/user";
 
-function UserInvite({user, invites, eventId, sendInvite, cancelInvite}) {
+function UserInvite({user, invites, eventId, sendInviteBackend, cancelInvite}) {
     const invited = invites.find(i => i.eventId === eventId && i.inviteeId === user.id)
     function sendInviteToUser() {
-        sendInvite({
+        sendInviteBackend({
             eventId,
             inviteeId: user.id,
             attendingStatus: 'pending'
@@ -29,7 +29,7 @@ function UserInvite({user, invites, eventId, sendInvite, cancelInvite}) {
 }
 
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({sendInvite, cancelInvite}, dispatch)
+    return bindActionCreators({sendInviteBackend, cancelInvite}, dispatch)
 }
 
 export default connect(undefined, mapDispatchToProps)(UserInvite)
