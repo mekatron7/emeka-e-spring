@@ -26,7 +26,7 @@ function Event({event, mode, startDeleteEvent, startEditEvent, showInviteModalBa
                 setVariant('info')
                 break
             case 'idk':
-                setStatusBtnText('I')
+                setStatusBtnText('Idk')
                 setVariant('warning')
                 break
             case 'nah':
@@ -65,7 +65,7 @@ function Event({event, mode, startDeleteEvent, startEditEvent, showInviteModalBa
                                         <Dropdown.Item onClick={() => selectGoingStatus('going')}>Going</Dropdown.Item>
                                         <Dropdown.Item onClick={() => selectGoingStatus('probably')}>Probably</Dropdown.Item>
                                         <Dropdown.Item onClick={() => selectGoingStatus('maybe')}>Maybe</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => selectGoingStatus('idk')}>I Might</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => selectGoingStatus('idk')}>Idk</Dropdown.Item>
                                         <Dropdown.Item onClick={() => selectGoingStatus('nah')}>Nah</Dropdown.Item>
                                     </DropdownButton>
                                 </Row>
