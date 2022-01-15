@@ -25,7 +25,7 @@ function Invites({invites, filteredInvites, invitesFilterMode, currentUser, filt
     }
 
     return <>
-        <h1>{user.firstName}'s Events</h1>
+        <h1>{user.firstName}'s Invites</h1>
         <hr/>
         <EventModal/>
         <InviteModal/>
@@ -44,8 +44,8 @@ function Invites({invites, filteredInvites, invitesFilterMode, currentUser, filt
             </Col>
         </Row>
         <hr/>
-        {invitesFilterMode ? <Row>{filteredInvites.map((event, idx) => <Event key={idx} event={event} mode={'invite'}/>)}</Row>
-            : <Row>{invites.map((event, idx) => <Event key={idx} event={event} mode={'invite'}/>)}</Row>}
+        {invitesFilterMode ? <Row>{filteredInvites.map((invite, idx) => <Event key={idx} event={invite} mode={'invite'}/>)}</Row>
+            : <Row>{invites.map((invite, idx) => <Event key={idx} event={invite} mode={'invite'}/>)}</Row>}
     </>
 
 }
@@ -58,7 +58,7 @@ function mapStateToProps(state) {
     console.log(state.invites)
     console.log(state.events)
     return {
-        invites: state.events,
+        invites: state.invites,
         filteredInvites: state.filteredInvites.filter(e => state.invites.some(i => i.eventId === e.id && i.inviteeId === state.currentUser.id)),
         invitesFilterMode: state.invitesFilterMode
     }

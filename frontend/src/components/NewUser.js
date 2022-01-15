@@ -1,4 +1,4 @@
-import {Button, Form, Modal} from "react-bootstrap";
+import {Button, Form, Modal, Spinner} from "react-bootstrap";
 import {useEffect, useState} from "react";
 import {checkUsername, hideSignUpModal, register} from "../modules/user";
 
@@ -24,7 +24,9 @@ function NewUser({dispatch, userReducer}){
         else {
             //Display spinner by the availability element
             dispatch(checkUsername(username))
+            console.log(userReducer.foundUsername)
             if (userReducer.foundUsername === 'true') {
+                console.log(userReducer.foundUsername)
                 setAvailability('Sorry this username is already taken.')
                 setValidUser(false)
             }
@@ -32,6 +34,7 @@ function NewUser({dispatch, userReducer}){
                 setAvailability('This username is available!')
                 setValidUser(true)
             }
+            console.log(userReducer.foundUsername)
         }
     }
 
@@ -82,30 +85,31 @@ function NewUser({dispatch, userReducer}){
             </Modal.Header>
             <Form onSubmit={validateNewUser}>
                 <Modal.Body>
-                    <Form.Group className="mb-3" controlId="formFirstName">
+                    <Form.Group className="mb-3">
                         <Form.Label>First Name</Form.Label>
                         <Form.Control type="text" placeholder="First name" onChange={e => setFName(e.target.value)}/>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formLastName">
+                    <Form.Group className="mb-3">
                         <Form.Label>Last Name</Form.Label>
                         <Form.Control type="text" placeholder="Last name" onChange={e => setLName(e.target.value)}/>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formUsername">
+                    <Form.Group className="mb-3">
                         <Form.Label>Username</Form.Label>
                         <Form.Control id="username" type="text" placeholder="Enter username" onChange={e => {
                             setUsername(e.target.value)
                         }}/>
-                        <Form.Text className="text-muted">{availability}</Form.Text>
+                        {userReducer.checkingUsername ? <Spinner animation="border" variant="info" size="sm"/> :
+                        <Form.Text className="text-muted">{availability}</Form.Text>}
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formPassword">
+                    <Form.Group className="mb-3">
                         <Form.Label>Password</Form.Label>
                         <Form.Control type="password" placeholder="Password" onChange={e => setPassword(e.target.value)}/>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formConfirmPassword">
+                    <Form.Group className="mb-3">
                         <Form.Label>Confirm Password</Form.Label>
                         <Form.Control type="password" placeholder="Confirm Password" onChange={e => setConfirmPassword(e.target.value)}/>
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="formEmail">
+                    <Form.Group className="mb-3">
                         <Form.Label>Email Address</Form.Label>
                         <Form.Control type="email" placeholder="Email Address" onChange={e => setEmail(e.target.value)}/>
                     </Form.Group>

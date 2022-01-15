@@ -35,6 +35,7 @@ const SET_EVENTS = 'react-redux-calendar/event/SET_EVENTS'
 const START_DELETE_EVENT = 'react-redux-calendar/event/START_DELETE_EVENT'
 const HIDE_DELETE_EVENT_MODAL = 'react-redux-calendar/event/HIDE_DELETE_EVENT_MODAL'
 const SET_INVITES = 'react-redux-calendar/event/SET_INVITES'
+const SET_All_INVITES = 'react-redux-calendar/event/SET_All_INVITES'
 
 //Reducer
 const initialState = {
@@ -62,7 +63,8 @@ const initialState = {
     checkingUsername: false,
     foundUsername: false,
     eventToDelete: null,
-    showDeleteEventModal: false
+    showDeleteEventModal: false,
+    allInvites: []
 }
 
 export default function reducer (state = initialState, action) {
@@ -227,7 +229,8 @@ export default function reducer (state = initialState, action) {
             return {
                 ...state,
                 showInviteModal: false,
-                eventToInviteTo: null
+                eventToInviteTo: null,
+                allInvites: []
             }
 
         case SEND_INVITE:
@@ -286,7 +289,14 @@ export default function reducer (state = initialState, action) {
 
         case SET_INVITES:
             return {
-                ...state
+                ...state,
+                invites: action.invites
+            }
+
+        case SET_All_INVITES:
+            return {
+                ...state,
+                allInvites: action.invites
             }
 
         default:
@@ -424,6 +434,10 @@ export function setInvites(invites) {
     return {type: SET_INVITES, invites}
 }
 
+export function setAllInvites(invites) {
+    return {type: SET_All_INVITES, invites}
+}
+
 export function initiateLoginBackend(credentials) {
     return function sideEffect(dispatch) {
         fetch("http://localhost:8080/user/login", {
@@ -455,6 +469,8 @@ export function setCurrentUser(username) {
             response.json().then(currentUser => {
                 dispatch(loginSuccess(currentUser))
                 dispatch(getEvents())
+                console.log(currentUser.id)
+                dispatch(getInvitesBackend(currentUser.id))
             })
         }).catch(error => dispatch(loginFailure(error)))
     }
@@ -470,6 +486,7 @@ export function checkUsername(username) {
                 return dispatch(loginFailure('Unexpected error.'))
 
             response.text().then(text => {
+                console.log(text)
                 dispatch(gotUsernameStatus(text))
             })
         }).catch(error => dispatch(loginFailure(error)))
@@ -578,12 +595,13 @@ export function deleteEventBackend(id) {
 export function showInviteModalBackend(event) {
     return function sideEffect(dispatch) {
         dispatch(getAllUsers())
+        dispatch(getAllInvites())
         dispatch(showInviteModal(event))
     }
 }
 
 export function sendInviteBackend(invite) {
-    return function sideEffect(dispatch) {
+    return function sideEffect(dispatch, getState) {
         fetch("http://localhost:8080/invite/invite", {
             method: "POST",
             headers: {
@@ -591,11 +609,60 @@ export function sendInviteBackend(invite) {
             },
             body: JSON.stringify(invite)
         }).then(response => {
-            if (!response.ok)
+            if (!response.ok) {
+                console.log('Failed invite:')
+                console.log(invite)
                 alert("Failed to send invite.")
+        }
+            response.text().then(text => {
+                if (text === 'success') {
+                    dispatch(getAllInvites())
+                    dispatch(getInvitesBackend(getState().currentUser.id))
+                }
+            })
+        }).catch(error => alert(error))
+    }
+}
+
+export function getInvitesBackend(id) {
+    return function sideEffect(dispatch) {
+        fetch(`http://localhost:8080/invite/getInvites/${id}`, {
+            method: 'GET'
+        }).then(response => {
+            if (!response.ok)
+                alert('Failed to get invites for some reason.')
+            response.json().then(invites => {
+                dispatch(setInvites(invites))
+                console.log(invites)
+            })
+        }).catch(error => alert(error))
+    }
+}
+
+export function getAllInvites() {
+    return function sideEffect(dispatch) {
+        fetch("http://localhost:8080/invite/getAllInvites", {
+            method: 'GET'
+        }).then(response => {
+            if (!response.ok)
+                alert('Failed to get invites.')
+            response.json().then(invites => {
+                dispatch(setAllInvites(invites))
+            })
+        }).catch(error => alert(error))
+    }
+}
+
+export function cancelInviteBackend(eventId, userId) {
+    return function sideEffect(dispatch) {
+        fetch(`http://localhost:8080/invite/uninvite/${eventId}/${userId}`, {
+            method: 'DELETE'
+        }).then(response => {
+            if (!response.ok)
+                alert('Failed to cancel invite.')
             response.text().then(text => {
                 if (text === 'success')
-                    alert('Invites still need to be set here.')
+                    dispatch(getAllInvites())
             })
         }).catch(error => alert(error))
     }

@@ -6,7 +6,7 @@ import Invites from "./Invites";
 function Home(props){
 
     return <>
-        <h1>Hey there {props.currentUser.firstName}, welcome to the React Calendar.</h1>
+        <h1 className='text-center'>Hey there {props.currentUser.firstName}, welcome to the React Calendar.</h1>
         <hr/>
         <Tabs justify transition={true} defaultActiveKey="userInfo" id="home-tabs" className="mb-3">
             <Tab eventKey="userInfo" title="User Info">

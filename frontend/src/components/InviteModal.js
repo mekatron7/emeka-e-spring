@@ -23,7 +23,7 @@ function mapStateToProps(state) {
         show: state.showInviteModal,
         users: state.users.filter(u => u.id !== state.currentUser.id),
         eventToInviteTo: state.eventToInviteTo,
-        invitesList: state.invites
+        invitesList: state.allInvites
     }
 }
 

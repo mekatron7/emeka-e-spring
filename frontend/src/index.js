@@ -9,7 +9,6 @@ import userReducer from './modules/user'
 
 const asyncMiddleware = storeAPI => next => action => {
     if (typeof action === 'function') {
-        console.log(action)
         return action(storeAPI.dispatch, storeAPI.getState)
     }
 

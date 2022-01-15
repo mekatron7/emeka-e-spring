@@ -7,6 +7,14 @@ function Login({dispatch, userReducer}){
     const [username, setUserName] = useState('')
     const [password, setPassword] = useState('')
 
+    const formStyle = {
+        margin:"auto",
+        width:"100%",
+        padding: "25px",
+        borderRadius: "5px",
+        border: "thin solid lightgrey"
+    }
+
     function handleSubmit(event){
         event.preventDefault()
         dispatch(initiateLoginBackend({username, password}))
@@ -14,7 +22,7 @@ function Login({dispatch, userReducer}){
 
     return <>
         <NewUser dispatch={dispatch} userReducer={userReducer}/>
-        <Form onSubmit={handleSubmit}>
+        <Form style={formStyle} onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicUsername">
                 <Form.Label>Username</Form.Label>
                 <Form.Control type='text' placeholder="Enter username" onChange={e => setUserName(e.target.value)}/>
