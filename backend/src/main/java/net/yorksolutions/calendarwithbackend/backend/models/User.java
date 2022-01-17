@@ -32,6 +32,9 @@ public class User {
     @JsonProperty
     String email;
 
+    @JsonProperty
+    boolean admin;
+
     public User(String dateCreated, String username, String password, String firstName, String lastName, String email) {
         this.dateCreated = dateCreated;
         this.username = username;

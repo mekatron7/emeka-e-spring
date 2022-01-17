@@ -451,7 +451,10 @@ export function initiateLoginBackend(credentials) {
                 return dispatch(loginFailure('Some f**kery happened while trying to connect to the server.'))
 
             response.text().then(text => {
-                if (text === 'success') dispatch(setCurrentUser(credentials.username))
+                if (text === 'success') {
+                    dispatch(setCurrentUser(credentials.username))
+                    dispatch(getAllUsers())
+                }
                 else dispatch(loginFailure(text))
             })
         }).catch(error => dispatch(loginFailure(error)))
