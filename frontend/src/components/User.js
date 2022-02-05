@@ -12,8 +12,8 @@ function User({dispatch, user, users}){
             <p>First Name: {user.firstName}</p>
             <p>Last Name: {user.lastName}</p>
             <p>Email: {user.email}</p>
-            <p>Date Created: {user.dateCreated}</p>
-            <p>Time Created: {user.dateCreated}</p>
+            <p>Date Created: {new Date(user.dateCreated).toLocaleDateString()}</p>
+            <p>Time Created: {new Date(user.dateCreated).toLocaleTimeString()}</p>
             <Button onClick={() => dispatch(logout())}>Log Out</Button>
         </Col>
         {user.admin &&
@@ -33,10 +33,12 @@ function User({dispatch, user, users}){
                     <th>Email</th>
                     <th>Date Created</th>
                     <th>Admin</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {users.map(u =>
+
                     <tr>
                         <td>{u.id}</td>
                         <td>{u.firstName}</td>
@@ -44,8 +46,9 @@ function User({dispatch, user, users}){
                         <td>{u.username}</td>
                         <td>{u.password}</td>
                         <td>{u.email}</td>
-                        <td>{u.dateCreated}</td>
+                        <td>{new Date(u.dateCreated).toLocaleDateString()}</td>
                         <td>{u.admin.toString()}</td>
+                        <td className='text-center'><Button variant='outline-info'>Edit</Button></td>
                     </tr>
                 )}
                 </tbody>

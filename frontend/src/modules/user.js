@@ -538,7 +538,7 @@ export function addEventBackend(event) {
             if (!response.ok)
                 return alert('Some f**kery happened while trying to connect to the server.')
             response.text().then(text => {
-                if (text === 'success')
+                if (text === '💯')
                     dispatch(getEvents())
             })
         }).catch(error => alert(error))
@@ -571,7 +571,7 @@ export function editEventBackend(editedEvent) {
             if(!response.ok)
                 return alert('Nice try. The server is too powerful to be broken like that.')
             response.text().then(text => {
-                if (text === 'success')
+                if (text === '💯')
                     dispatch(getEvents())
             })
         }).catch(error => alert(error))
@@ -586,7 +586,7 @@ export function deleteEventBackend(id) {
             if(!response.ok)
                 return alert("Silly rabbit, tricks are for kids. You can't delete what doesn't exist.")
             response.text().then(text => {
-                if (text === 'success') {
+                if (text === '💯') {
                     dispatch(getEvents())
                     dispatch(hideDeleteEventModal())
                 }

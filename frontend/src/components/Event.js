@@ -10,6 +10,9 @@ function Event({event, mode, userId, startDeleteEvent, startEditEvent, showInvit
     // eventDate = eventDate.toLocaleDateString()
     const [variant, setVariant] = useState('secondary')
     const [statusBtnText, setStatusBtnText] = useState('Select Attending Status')
+    const eventDate = new Date(event.eventDate)
+    eventDate.setDate(eventDate.getDate() + 1)
+    const dateString = eventDate.toLocaleDateString()
     useEffect(() => {
         if (mode === 'invite' && event.attendingStatus !== 'pending')
         selectGoingStatus(event.attendingStatus.charAt(0).toUpperCase() + event.attendingStatus.slice(1))
@@ -22,23 +25,23 @@ function Event({event, mode, userId, startDeleteEvent, startEditEvent, showInvit
         console.log(`Status: ${status}`)
 
         switch (status) {
-            case 'Going':
+            case 'Going 💯':
                 setStatusBtnText(status)
                 setVariant('success')
                 break
-            case 'Probably':
+            case 'Probably 😏':
                 setStatusBtnText(status)
                 setVariant('primary')
                 break
-            case 'Maybe':
+            case 'Maybe 🤔':
                 setStatusBtnText(status)
                 setVariant('info')
                 break
-            case 'Idk':
+            case 'Idk 🤷‍♂️':
                 setStatusBtnText(status)
                 setVariant('warning')
                 break
-            case 'Nah':
+            case 'Nah 🙅‍♂️':
                 setStatusBtnText(status)
                 setVariant('danger')
                 break
@@ -67,7 +70,7 @@ function Event({event, mode, userId, startDeleteEvent, startEditEvent, showInvit
                         <Card.Body>
                             {mode === 'event' ?
                             <>
-                                <Card.Title>{event.eventDate}</Card.Title>
+                                <Card.Title>{dateString}</Card.Title>
                                 <Card.Title>{event.eventTime}</Card.Title>
                                 <Card.Text>{event.eventDescription}</Card.Text>
                                 <Card.Text>Location: {event.eventLocation}</Card.Text>
@@ -79,7 +82,7 @@ function Event({event, mode, userId, startDeleteEvent, startEditEvent, showInvit
                                             <h6>Host: {event.hostFullName} ({event.hostUsername})</h6>
                                         </Col>
                                         <Col style={{textAlign: 'right'}}>
-                                            <h6>Date: {event.eventDate}</h6>
+                                            <h6>Date: {dateString}</h6>
                                         </Col>
                                     </Row>
                                     <Row>
@@ -117,11 +120,11 @@ function Event({event, mode, userId, startDeleteEvent, startEditEvent, showInvit
                                 :
                                 <Row className='text-center'>
                                     <DropdownButton variant={variant} id="dropdown-basic-button" title={statusBtnText}>
-                                        <Dropdown.Item onClick={() => sendInviteStatus('Going')}>Going</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => sendInviteStatus('Probably')}>Probably</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => sendInviteStatus('Maybe')}>Maybe</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => sendInviteStatus('Idk')}>Idk</Dropdown.Item>
-                                        <Dropdown.Item onClick={() => sendInviteStatus('Nah')}>Nah</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => sendInviteStatus('Going 💯')}>Going 💯</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => sendInviteStatus('Probably 😏')}>Probably 😏</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => sendInviteStatus('Maybe 🤔')}>Maybe 🤔</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => sendInviteStatus('Idk 🤷‍♂️')}>Idk 🤷‍♂️</Dropdown.Item>
+                                        <Dropdown.Item onClick={() => sendInviteStatus('Nah 🙅‍♂️')}>Nah 🙅‍♂️</Dropdown.Item>
                                     </DropdownButton>
                                 </Row>
                             }

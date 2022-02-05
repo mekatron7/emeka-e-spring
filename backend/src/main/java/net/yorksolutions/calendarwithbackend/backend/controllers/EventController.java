@@ -18,7 +18,7 @@ public class EventController {
     @PostMapping("/add")
     String add(@RequestBody Event event) {
         repository.save(event);
-        return "success";
+        return "💯";
     }
 
     @CrossOrigin
@@ -32,7 +32,7 @@ public class EventController {
     String edit(@RequestBody Event editedEvent) {
         repository.findById(editedEvent.getId()).orElseThrow();
         repository.save(editedEvent);
-        return "success";
+        return "💯";
     }
 
     @CrossOrigin
@@ -41,6 +41,6 @@ public class EventController {
         repository.findById(id).orElseThrow();
         repository.deleteById(id);
         inviteRepository.deleteAllByEventId(id);
-        return "success";
+        return "💯";
     }
 }
